@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Beyond3D: Free-view infrared-visible fusion from misaligned RGB-IR observations. Explore rendered fusion results along two novel camera trajectories.">
+  <meta name="theme-color" content="#f5f4ee">
+  <title>Beyond3D | From Pair to Scene</title>
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="styles.css">
+  <script src="assets/trajectories.js" defer></script>
+  <script src="app.js" defer></script>
+</head>
+<body>
+  <a class="skip-link" href="#explore">Skip to interactive viewer</a>
+  <header class="site-header">
+    <a class="brand" href="#top" aria-label="Beyond3D home"><svg viewBox="0 0 36 36" aria-hidden="true"><path d="M18 3 32 11 18 19 4 11Z"/><path d="m4 17 14 8 14-8M4 24l14 8 14-8"/></svg>Beyond<span>3D</span></a>
+    <nav aria-label="Main navigation"><a href="#explore">Explore</a><a href="#paper">The paper</a><a class="nav-code" href="https://github.com/PopC4N/FreeIVF-3D" target="_blank" rel="noopener noreferrer">Codes <span aria-hidden="true">↗</span></a></nav>
+  </header>
+  <main id="top">
+    <section class="hero section-wrap" aria-labelledby="paper-title">
+      <p class="eyebrow"><span class="eyebrow-line"></span>Infrared-visible fusion in 3D</p>
+      <h1 id="paper-title"><span>From Pair to Scene:</span><br>Free-View Infrared-Visible Fusion<br class="desktop-break"> from Misaligned RGB-IR Observations</h1>
+      <p class="authors">Shengjie Hu<span>·</span>Hua Chen<span>·</span>Xiaogang Zhang<span>·</span>Zhengzhao Pan<span>·</span>Xiaoyu Zhu<span>·</span>Jiuye Shi</p>
+      <p class="hero-description">Beyond3D brings infrared-visible fusion into a scene representation. Explore fused views along novel camera trajectories, beyond the observed image pairs.</p>
+      <div class="hero-actions"><a class="button button-primary" href="#explore">Explore the views <span aria-hidden="true">↓</span></a><a class="button button-secondary" href="#paper"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M5 2h7l4 4v12H5zM12 2v5h4M8 11h5M8 14h5"/></svg>Paper figures</a><a class="button button-secondary" href="https://github.com/PopC4N/FreeIVF-3D" target="_blank" rel="noopener noreferrer"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="m6 5-5 5 5 5m8-10 5 5-5 5M12 2 8 18"/></svg>Codes <span aria-hidden="true">↗</span></a></div>
+      <div class="hero-rule"><span>A scene, many perspectives.</span><span>Scroll to move through the scene <span aria-hidden="true">↘</span></span></div>
+    </section>
+
+    <section class="explore-section section-wrap" id="explore" aria-labelledby="explore-heading">
+      <div class="section-heading"><div><p class="eyebrow section-number">01 / Interactive exploration</p><h2 id="explore-heading">Follow the trajectory.<br><em>See the fusion.</em></h2></div><p class="section-intro">Move through the manuscript's novel trajectories. Drag the slider, select a query view, or press play to explore the rendered results.</p></div>
+      <div class="viewer-shell" id="viewer" tabindex="0" aria-label="Interactive trajectory viewer. Use left and right arrow keys to move one frame, and space to play or pause.">
+        <div class="viewer-toolbar"><div class="scene-switcher" id="scene-switcher" role="group" aria-label="Select scene"></div><span class="render-tag"><span></span>Pre-rendered fusion</span></div>
+        <div class="viewer-body">
+          <div class="image-panel">
+            <div class="image-label"><span class="image-label-dot"></span><span id="image-scene-name">Loading scenes</span></div>
+            <img id="fusion-image" alt="Fusion result for the selected camera view" draggable="false" decoding="async">
+            <div class="image-placeholder" id="image-placeholder"><span class="loading-spinner" aria-hidden="true"></span><span id="placeholder-text">Loading the first view</span></div>
+            <div class="error-panel" id="error-panel" hidden><span>View unavailable</span><p id="error-message">This frame could not be loaded.</p><button type="button" id="retry-button">Try again</button></div>
+            <div class="image-footer"><span id="image-view-label">Fusion view</span><a id="open-frame" target="_blank" rel="noopener noreferrer" aria-label="Open this rendered frame at its original resolution">Open frame <span aria-hidden="true">↗</span></a></div>
+          </div>
+          <aside class="trajectory-panel" aria-labelledby="trajectory-heading">
+            <div class="trajectory-heading"><p class="eyebrow">Camera path</p><span class="path-symbol" aria-hidden="true">↗</span></div>
+            <h3 id="trajectory-heading">A new perspective,<br>at every step.</h3>
+            <p class="scene-description" id="scene-description"></p>
+            <div class="trajectory-map" id="trajectory-map"><svg id="trajectory-svg" viewBox="0 0 320 250" role="img" aria-label="Camera trajectory projection"><defs><pattern id="map-grid" width="32" height="32" patternUnits="userSpaceOnUse"><circle cx="1" cy="1" r="0.75" fill="#b8c9c4"/></pattern></defs><rect x="0" y="0" width="320" height="250" fill="url(#map-grid)"/><path id="trajectory-path" fill="none"/><g id="query-map-points"></g><circle id="current-halo" r="11"/><circle id="current-point" r="5"/></svg><p id="map-unavailable" hidden>Camera coordinates are not available for this sequence.</p></div>
+            <div class="map-legend"><span><i class="legend-line"></i>Novel trajectory</span><span><i class="legend-dot"></i>Current view</span></div>
+            <p class="projection-note" id="projection-note"></p>
+            <div class="query-heading"><span>Manuscript query views</span><span aria-hidden="true">↙</span></div>
+            <div class="query-buttons" id="query-buttons" role="group" aria-label="Jump to a manuscript query view"></div>
+          </aside>
+        </div>
+        <div class="playback-panel">
+          <div class="timeline-info"><span class="timeline-title">Trajectory progress <strong id="progress-value">0.0%</strong></span><span id="frame-counter">Frame 0 / 0</span></div>
+          <div class="timeline"><input id="progress-slider" type="range" min="0" max="1" step="any" value="0" aria-label="Camera trajectory progress" aria-valuetext="0 percent"><div class="timeline-markers" id="timeline-markers" aria-hidden="true"></div></div>
+          <div class="playback-bottom"><div class="playback-controls"><button class="icon-button step-button" type="button" id="previous-frame" aria-label="Previous frame" title="Previous frame (Left arrow)"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M5 4v12M15 4l-8 6 8 6z"/></svg></button><button class="play-button" type="button" id="play-button" aria-label="Play trajectory" title="Play or pause (Space)"><svg id="play-icon" viewBox="0 0 20 20" aria-hidden="true"><path d="m7 4 9 6-9 6z"/></svg><span id="play-label">Play</span></button><button class="icon-button step-button" type="button" id="next-frame" aria-label="Next frame" title="Next frame (Right arrow)"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M15 4v12M5 4l8 6-8 6z"/></svg></button><span class="control-divider"></span><label class="speed-label" for="playback-speed">Speed</label><select id="playback-speed" aria-label="Playback speed"><option value="0.5">0.5×</option><option value="1" selected>1×</option><option value="1.5">1.5×</option><option value="2">2×</option></select></div><div class="load-status" id="load-status" role="status" aria-live="polite"><span class="status-dot"></span><span id="load-status-text">Loading sequence</span></div></div>
+        </div>
+      </div>
+      <div class="viewer-notes"><p><span aria-hidden="true">↔</span> Drag to explore. Arrow keys step through views. Space plays or pauses.</p><p>Each position shows the nearest available rendered view. Images are not blended between frames.</p></div>
+      <noscript><p class="noscript-note">Enable JavaScript to use the trajectory viewer. The manuscript figures below remain available.</p></noscript>
+    </section>
+
+    <section class="paper-section section-wrap" id="paper" aria-labelledby="paper-heading">
+      <div class="section-heading"><div><p class="eyebrow section-number">02 / Inside the paper</p><h2 id="paper-heading">From observations<br><em>to a fused scene.</em></h2></div><p class="section-intro">The first three figures from our manuscript. Select a figure to inspect it at full resolution.</p></div>
+      <figure class="paper-figure figure-wide"><a href="assets/figures/fig-01.png" target="_blank" rel="noopener noreferrer" aria-label="Open Figure 1 at full resolution"><img src="assets/figures/fig-01.webp" alt="Comparison of observed-pair fusion, scene cascades, and Beyond3D camera-queryable fusion" loading="lazy" decoding="async"></a><figcaption><span class="figure-number">Figure 1</span><div><h3>From pair to scene</h3><p id="figure-1-caption">From observed-pair fusion to camera-queryable scene fusion. Beyond3D couples registration and fusion through a Gaussian scene representation.</p></div><a class="figure-open" href="assets/figures/fig-01.png" target="_blank" rel="noopener noreferrer" aria-label="Open Figure 1">↗</a></figcaption></figure>
+      <figure class="paper-figure figure-wide"><a href="assets/figures/fig-02.png" target="_blank" rel="noopener noreferrer" aria-label="Open Figure 2 at full resolution"><img src="assets/figures/fig-02.webp" alt="Beyond3D pipeline showing registration initialization, coarse and fine co-refinement, and pre-projection fusion" loading="lazy" decoding="async"></a><figcaption><span class="figure-number">Figure 2</span><div><h3>The Beyond3D framework</h3><p id="figure-2-caption">Beyond3D initializes per-view registration, jointly refines shared and modality-specific Gaussian representations, and fuses paired attributes before a single rendering pass.</p></div><a class="figure-open" href="assets/figures/fig-02.png" target="_blank" rel="noopener noreferrer" aria-label="Open Figure 2">↗</a></figcaption></figure>
+      <figure class="paper-figure figure-wide"><a href="assets/figures/fig-03.png" target="_blank" rel="noopener noreferrer" aria-label="Open Figure 3 at full resolution"><img src="assets/figures/fig-03.webp" alt="References and fusion results at held-out views from four RGBT-Scenes scenes" loading="lazy" decoding="async"></a><figcaption><span class="figure-number">Figure 3</span><div><h3>Held-out view comparison</h3><p id="figure-3-caption">Fusion at held-out test views from four RGBT-Scenes scenes. Pairwise methods receive images at each query view; scene methods render learned representations. Results use pseudocolor infrared.</p></div><a class="figure-open" href="assets/figures/fig-03.png" target="_blank" rel="noopener noreferrer" aria-label="Open Figure 3">↗</a></figcaption></figure>
+    </section>
+    <section class="resource-section section-wrap" aria-labelledby="resource-heading"><div><p class="eyebrow">Continue exploring</p><h2 id="resource-heading">A closer look at Beyond3D.</h2></div><div class="resource-links"><a href="#paper"><span>Paper figures</span><span aria-hidden="true">↑</span></a><a href="https://github.com/PopC4N/FreeIVF-3D" target="_blank" rel="noopener noreferrer"><span>Explore the repository</span><span aria-hidden="true">↗</span></a></div></section>
+  </main>
+  <footer class="site-footer section-wrap"><a class="footer-brand" href="#top">Beyond3D</a><p>Free-view infrared-visible fusion.</p><a href="#top">Back to top <span aria-hidden="true">↑</span></a></footer>
+</body>
+</html>
