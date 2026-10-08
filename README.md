@@ -4,10 +4,6 @@
 
 ## From Pair to Scene: Free-View Infrared-Visible Fusion from Misaligned RGB-IR Observations
 
-Shengjie Hu, Hua Chen, Xiaogang Zhang, Zhengzhao Pan, Xiaoyu Zhu, and Jiuye Shi
-
-Hunan University
-
 **A camera-queryable scene representation for infrared-visible fusion.**
 
 [Project page](https://popc4n.github.io/FreeIVF-3D/) · [Interactive trajectory viewer](https://popc4n.github.io/FreeIVF-3D/#explore) · [Codes](https://github.com/PopC4N/FreeIVF-3D) · [Method](#method) · [Qualitative results](#qualitative-results)
